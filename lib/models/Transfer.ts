@@ -1,5 +1,5 @@
 import { DataTypes } from '@sequelize/core';
-import { Base, BaseCol } from './Base';
+import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
 
 export class Transfer extends Base {
@@ -36,5 +36,5 @@ Transfer.init(
 
     ps: DataTypes.STRING,
   },
-  { tableName: 'transfers', sequelize }
+  { sequelize, defaultScope, tableName: 'transfers' }
 );

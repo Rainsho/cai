@@ -1,5 +1,5 @@
 import { DataTypes } from '@sequelize/core';
-import { Base, BaseCol } from './Base';
+import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
 
 export class Account extends Base {
@@ -38,5 +38,5 @@ Account.init(
     billDay: DataTypes.TINYINT,
     dueDay: DataTypes.TINYINT,
   },
-  { tableName: 'accounts', sequelize }
+  { sequelize, defaultScope, tableName: 'accounts' }
 );

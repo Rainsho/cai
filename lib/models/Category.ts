@@ -1,5 +1,5 @@
 import { DataTypes } from '@sequelize/core';
-import { Base, BaseCol } from './Base';
+import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
 
 export class Category extends Base {
@@ -27,7 +27,7 @@ Category.init(
       allowNull: false,
     },
   },
-  { tableName: 'categories', sequelize }
+  { sequelize, defaultScope, tableName: 'categories' }
 );
 
 Category.addHook('beforeValidate', async (category: Category) => {

@@ -1,4 +1,4 @@
-import { CreationOptional, DataTypes, Model } from '@sequelize/core';
+import { CreationOptional, DataTypes, Model, ModelOptions } from '@sequelize/core';
 
 export class Base extends Model {
   declare id: CreationOptional<number>;
@@ -15,4 +15,8 @@ export const BaseCol = {
 
   createdAt: DataTypes.DATE,
   updatedAt: DataTypes.DATE,
+};
+
+export const defaultScope: ModelOptions['defaultScope'] = {
+  attributes: { exclude: ['createdAt', 'updatedAt'] },
 };

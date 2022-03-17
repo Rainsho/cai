@@ -1,5 +1,5 @@
 import { DataTypes } from '@sequelize/core';
-import { Base, BaseCol } from './Base';
+import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
 
 export class Label extends Base {
@@ -15,5 +15,5 @@ Label.init(
       allowNull: false,
     },
   },
-  { tableName: 'labels', sequelize }
+  { sequelize, defaultScope, tableName: 'labels' }
 );

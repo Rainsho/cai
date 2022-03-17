@@ -1,5 +1,5 @@
 import { DataTypes } from '@sequelize/core';
-import { Base, BaseCol } from './Base';
+import { Base, BaseCol, defaultScope } from './Base';
 import { CategoryType } from './Category';
 import { sequelize } from './sequelize';
 
@@ -24,7 +24,7 @@ Waterfall.init(
     },
     occur: {
       type: DataTypes.DATE,
-      allowNull: false,
+      defaultValue: DataTypes.NOW,
     },
     amount: {
       type: DataTypes.DECIMAL(12, 2),
@@ -50,7 +50,7 @@ Waterfall.init(
 
     ps: DataTypes.STRING,
   },
-  { tableName: 'waterfalls', sequelize }
+  { sequelize, defaultScope, tableName: 'waterfalls' }
 );
 
 Waterfall.addHook('beforeValidate', async (waterfall: Waterfall) => {
