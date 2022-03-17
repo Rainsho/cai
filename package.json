@@ -10,11 +10,14 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "cookie": "^0.4.2",
+    "jose": "^4.6.0",
     "next": "12.1.0",
     "react": "17.0.2",
     "react-dom": "17.0.2"
   },
   "devDependencies": {
+    "@types/cookie": "^0.4.1",
     "@types/node": "17.0.21",
     "@types/react": "17.0.40",
     "eslint": "8.11.0",
