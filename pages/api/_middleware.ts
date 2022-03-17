@@ -2,9 +2,10 @@ import { jwtVerify } from 'jose';
 import { NextRequest, NextResponse } from 'next/server';
 import { COOKIE_NAME, JSW_SECRET_KEY } from '../../lib/constants';
 
+const ALLOW_LIST = ['/api/ping', '/api/auth'];
+
 export async function middleware(req: NextRequest) {
-  if (req.method === 'POST' && req.nextUrl.pathname === '/api/auth') return;
-  if (req.nextUrl.pathname === '/api/ping') return;
+  if (ALLOW_LIST.includes(req.nextUrl.pathname)) return;
 
   try {
     const token = req.cookies[COOKIE_NAME];
