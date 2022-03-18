@@ -4,24 +4,26 @@ import { sequelize } from './sequelize';
 
 export class Category extends Base {
   declare name: string;
-  declare cid: number;
+  // declare cid: number;
+  declare subName: string;
   declare type: CategoryType;
 }
 
 export enum CategoryType {
-  INCOME = 1,
-  OUTCOME = 0,
+  INCOME = 0,
+  OUTCOME = 1,
+  TRANSFER = 2,
 }
 
 Category.init(
   {
     ...BaseCol,
-
     name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    cid: DataTypes.INTEGER,
+    // cid: DataTypes.INTEGER,
+    subName: DataTypes.STRING,
     type: {
       type: DataTypes.TINYINT,
       allowNull: false,
@@ -31,10 +33,10 @@ Category.init(
 );
 
 Category.addHook('beforeValidate', async (category: Category) => {
-  if (!category.cid) return;
+  // if (!category.cid) return;
 
-  const parent = await Category.findByPk(category.cid);
-  if (!parent) throw new Error('Parent category is not exist');
+  // const parent = await Category.findByPk(category.cid);
+  // if (!parent) throw new Error('Parent category is not exist');
 
   if (!Object.values(CategoryType).includes(category.type)) {
     throw new Error('Invalid type');

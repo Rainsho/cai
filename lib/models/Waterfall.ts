@@ -6,18 +6,19 @@ import { sequelize } from './sequelize';
 export class Waterfall extends Base {
   declare type: number;
   declare occur: Date;
-  declare amount: number;
-  declare cid: number;
+  declare income: number;
+  declare outcome: number;
   declare aid: number;
+  declare cid: number;
   declare lid: number;
   declare uid: number;
+  declare tid: number;
   declare ps: string;
 }
 
 Waterfall.init(
   {
     ...BaseCol,
-
     type: {
       type: DataTypes.TINYINT,
       allowNull: false,
@@ -26,16 +27,19 @@ Waterfall.init(
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
     },
-    amount: {
+    income: {
       type: DataTypes.DECIMAL(12, 2),
-      allowNull: false,
+      defaultValue: 0,
     },
-
-    cid: {
+    outcome: {
+      type: DataTypes.DECIMAL(12, 2),
+      defaultValue: 0,
+    },
+    aid: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    aid: {
+    cid: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
@@ -47,7 +51,10 @@ Waterfall.init(
       type: DataTypes.INTEGER,
       allowNull: true,
     },
-
+    tid: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
     ps: DataTypes.STRING,
   },
   { sequelize, defaultScope, tableName: 'waterfalls' }

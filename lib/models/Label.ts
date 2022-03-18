@@ -9,7 +9,6 @@ export class Label extends Base {
 Label.init(
   {
     ...BaseCol,
-
     name: {
       type: DataTypes.STRING,
       allowNull: false,
