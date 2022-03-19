@@ -1,5 +1,5 @@
-import { InferAttributes, InferCreationAttributes } from '@sequelize/core';
-import { Account, Category, Label, Waterfall } from './models';
+import type { InferCreationAttributes, Model } from '@sequelize/core';
+import type { Account, Category, Label, Waterfall } from './models';
 
 export enum BalanceType {
   YEAR = 'year',
@@ -7,6 +7,21 @@ export enum BalanceType {
   DAY = 'day',
   ACCOUNT = 'account',
   ALL = 'ALL',
+}
+
+export enum AccountType {
+  CASH = '现金',
+  CREDIT = '信用卡',
+  DEPOSIT = '储蓄卡',
+  INVEST = '投资账户',
+  PRE_PAID = '储值卡',
+  VIRTUAL = '虚拟',
+}
+
+export enum CategoryType {
+  INCOME = 0,
+  OUTCOME = 1,
+  TRANSFER = 2,
 }
 
 export type Balance<T extends BalanceType> = {
@@ -19,6 +34,8 @@ export type Balance<T extends BalanceType> = {
 export type MonthBalance = Balance<BalanceType.MONTH>;
 
 export type AccountBalance = Balance<BalanceType.ACCOUNT> & { aid: number };
+
+export type InferAttributes<T> = T extends Model<infer M, infer C> ? M : never;
 
 export namespace APIs {
   export type FEED = {

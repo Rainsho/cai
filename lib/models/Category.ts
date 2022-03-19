@@ -1,4 +1,5 @@
 import { DataTypes, InferAttributes } from '@sequelize/core';
+import { CategoryType } from '../types';
 import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
 import type { Waterfall } from './Waterfall';
@@ -20,12 +21,6 @@ export class Category extends Base<CategoryModelAttributes, CategoryCreationsAtt
   declare subName: string;
   declare type: CategoryType;
   declare sort: number;
-}
-
-export enum CategoryType {
-  INCOME = 0,
-  OUTCOME = 1,
-  TRANSFER = 2,
 }
 
 Category.init(

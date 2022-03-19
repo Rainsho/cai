@@ -40,3 +40,4 @@ yarn-error.log*
 # personal info
 .env
 database.sqlite
+.vscode

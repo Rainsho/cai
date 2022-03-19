@@ -1,7 +1,8 @@
 import { DataTypes, InferAttributes, InferCreationAttributes } from '@sequelize/core';
+import { CategoryType } from '../types';
 import { Account } from './Account';
 import { Base, BaseCol, defaultScope } from './Base';
-import { Category, CategoryType } from './Category';
+import { Category } from './Category';
 import { Label } from './Label';
 import { sequelize } from './sequelize';
 

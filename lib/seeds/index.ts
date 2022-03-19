@@ -1,5 +1,6 @@
 import { CreationAttributes, Op } from '@sequelize/core';
-import { Account, AccountType, Category, CategoryType, initDB, Label, Waterfall } from '../models';
+import { Account, Category, initDB, Label, Waterfall } from '../models';
+import { AccountType, CategoryType } from '../types';
 
 const accounts: CreationAttributes<Account>[] = [
   { genre: AccountType.CASH, name: '现金' },

@@ -1,16 +1,8 @@
 import { DataTypes, InferAttributes } from '@sequelize/core';
+import { AccountType } from '../types';
 import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
 import type { Waterfall } from './Waterfall';
-
-export enum AccountType {
-  CASH = '现金',
-  CREDIT = '信用卡',
-  DEPOSIT = '储蓄卡',
-  INVEST = '投资账户',
-  PRE_PAID = '储值卡',
-  VIRTUAL = '虚拟',
-}
 
 type AccountModelAttributes = {
   genre: string;
