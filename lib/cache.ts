@@ -1,35 +1,23 @@
 import { Op } from '@sequelize/core';
 import moment, { Moment } from 'moment';
-import { Waterfall } from './models';
-import { DateUnit, MonthBalance } from './types';
+import { Account, Waterfall } from './models';
+import { AccountBalance, Balance, BalanceType, MonthBalance } from './types';
 
 type CachedData = {
   monthBalances: MonthBalance[];
+  accountBalances: AccountBalance[];
 };
 
 export const CACHE: CachedData = {
   monthBalances: [],
+  accountBalances: [],
 };
 
 export async function flushCache() {
-  // const dayOne = moment().startOf('month').toDate();
-
-  // console.log(111, dayOne);
-
-  // const details = await Waterfall.findAll({
-  //   where: { occur: { [Op.gte]: dayOne } },
-  // });
-  // console.log(details.map(detail => detail.toJSON()));
-  // console.log(
-  //   details.map(detail => detail.toJSON()).reduce((acc, detail) => acc + detail.income, 0)
-  // );
-  // const sum = await Waterfall.sum('income', { where: { occur: { [Op.gte]: dayOne } } });
-  // console.log(sum);
-
-  // console.log(await calcMonthBalance(moment()));
   await flushMonthBalance();
+  await flushAccountBalance();
 
-  console.log(CACHE);
+  // console.log(CACHE);
 }
 
 export async function flushMonthBalance() {
@@ -56,7 +44,7 @@ export async function calcMonthBalance(date: Moment): Promise<MonthBalance> {
   const end = date.endOf('month').toDate();
 
   const records = await Waterfall.findAll({ where: { occur: { [Op.gte]: start, [Op.lte]: end } } });
-  const result: MonthBalance = { unit: DateUnit.MONTH, date: month, income: 0, outcome: 0 };
+  const result: MonthBalance = { type: BalanceType.MONTH, name: month, income: 0, outcome: 0 };
 
   return records.reduce((acc, record) => {
     acc.income += record.income;
@@ -64,4 +52,28 @@ export async function calcMonthBalance(date: Moment): Promise<MonthBalance> {
 
     return acc;
   }, result);
+}
+
+export async function flushAccountBalance() {
+  const accounts = await Account.findAll({ where: { show: true } });
+  const balances: AccountBalance[] = await Promise.all(accounts.map(calcAccountBalance));
+
+  CACHE.accountBalances = balances;
+}
+
+export async function calcAccountBalance(account: Account): Promise<AccountBalance> {
+  const aid = account.id;
+  const income = (await Waterfall.sum('income', { where: { aid } })) || 0;
+  const outcome = (await Waterfall.sum('outcome', { where: { aid } })) || 0;
+
+  return { type: BalanceType.ACCOUNT, name: account.name, income, outcome, aid };
+}
+
+export async function calcAllBalance(): Promise<Balance<BalanceType.ALL>> {
+  const accounts = await Account.findAll({ where: { net: false } });
+  const aids = accounts.map(account => account.id);
+  const income = (await Waterfall.sum('income', { where: { aid: { [Op.notIn]: aids } } })) || 0;
+  const outcome = (await Waterfall.sum('outcome', { where: { aid: { [Op.notIn]: aids } } })) || 0;
+
+  return { type: BalanceType.ALL, name: BalanceType.ALL, income, outcome };
 }

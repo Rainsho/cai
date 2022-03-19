@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { NextApiRequest, NextApiResponse } from 'next';
-import { feed, queryMonthList } from '../../../lib/services';
+import { accountFeed, feed, queryAccountList, queryMonthList } from '../../../lib/services';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const type = req.query.type?.toString();
@@ -15,6 +15,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const result = await queryMonthList(moment(type));
     res.json(result);
     return;
+  }
+
+  if (type.toUpperCase() === 'ACCOUNTS') {
+    const result = await accountFeed();
+    res.json(result);
+    return;
+  }
+
+  if (type.toUpperCase() === 'ACCOUNT') {
+    const id = +req.query.id;
+    const result = await queryAccountList(id);
+
+    if (!result) {
+      res.status(204);
+      res.end();
+    } else {
+      res.json(result);
+    }
   }
 
   res.status(404);

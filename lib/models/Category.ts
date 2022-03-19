@@ -1,15 +1,18 @@
-import { DataTypes } from '@sequelize/core';
+import { DataTypes, InferAttributes } from '@sequelize/core';
 import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
+import type { Waterfall } from './Waterfall';
 
 type CategoryModelAttributes = {
   name: string;
-  subName?: string;
+  subName: string;
   type: CategoryType;
   sort: number;
+  waterfalls?: InferAttributes<Waterfall>[];
 };
 
-type CategoryCreationsAttributes = Omit<CategoryModelAttributes, 'sort'>;
+type CategoryCreationsAttributes = Omit<CategoryModelAttributes, 'subName' | 'sort'> &
+  Partial<CategoryModelAttributes>;
 
 export class Category extends Base<CategoryModelAttributes, CategoryCreationsAttributes> {
   declare name: string;

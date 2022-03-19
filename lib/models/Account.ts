@@ -1,6 +1,7 @@
-import { DataTypes } from '@sequelize/core';
+import { DataTypes, InferAttributes } from '@sequelize/core';
 import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
+import type { Waterfall } from './Waterfall';
 
 export enum AccountType {
   CASH = '现金',
@@ -21,6 +22,7 @@ type AccountModelAttributes = {
   billDay: number;
   dueDay: number;
   sort: number;
+  waterfalls?: InferAttributes<Waterfall>[];
 };
 
 type AccountCreationAttributes = Pick<AccountModelAttributes, 'genre' | 'name'> &

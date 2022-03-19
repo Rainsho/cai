@@ -1,10 +1,12 @@
-import { DataTypes } from '@sequelize/core';
+import { DataTypes, InferAttributes } from '@sequelize/core';
 import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
+import type { Waterfall } from './Waterfall';
 
 type LabelModelAttributes = {
   name: string;
   sort: number;
+  waterfalls?: InferAttributes<Waterfall>[];
 };
 
 type LabelCreationAttributes = Pick<LabelModelAttributes, 'name'>;
