@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { Waterfall } from '../../lib/models';
-import { APIs } from '../../lib/types';
-import { logger } from '../../lib/utils';
+import { Waterfall } from '../../../lib/models';
+import { APIs } from '../../../lib/types';
+import { logger } from '../../../lib/utils';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST' || req.method === 'PUT') {
@@ -21,7 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   if (req.method === 'DELETE') {
     const result = await Waterfall.destroy({ where: { id: +req.query.id } });
-    res.json({ result });
+    res.json({ result, ok: result > 0 });
     return;
   }
 
