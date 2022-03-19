@@ -1,4 +1,4 @@
-import { InferAttributes } from '@sequelize/core';
+import { InferAttributes, InferCreationAttributes } from '@sequelize/core';
 import { Account, Category, Label, Waterfall } from './models';
 
 export enum BalanceType {
@@ -45,4 +45,6 @@ export namespace APIs {
     account: InferAttributes<Account>;
     list: Array<InferAttributes<Waterfall> & { balance: number }>;
   };
+
+  export type UPSERT_WATERFALL = InferCreationAttributes<Waterfall>;
 }

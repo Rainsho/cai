@@ -1,4 +1,4 @@
-import { DataTypes, InferAttributes } from '@sequelize/core';
+import { DataTypes, InferAttributes, InferCreationAttributes } from '@sequelize/core';
 import { Account } from './Account';
 import { Base, BaseCol, defaultScope } from './Base';
 import { Category, CategoryType } from './Category';
@@ -37,6 +37,18 @@ export class Waterfall extends Base<WaterfallModelAttributes, WaterfallCreationA
   declare uid: number;
   declare tid: number;
   declare ps: string;
+
+  static extractProps(
+    payload: InferCreationAttributes<Waterfall>
+  ): (WaterfallCreationAttributes & { id?: number }) | null {
+    const { id, type, occur, income, outcome, aid, cid, lid, uid, tid, ps } = payload || {};
+
+    if ([type, aid, cid, lid].some(prop => !prop)) {
+      return null;
+    }
+
+    return { id, type, occur, income, outcome, aid, cid, lid, uid, tid, ps };
+  }
 }
 
 Waterfall.init(
