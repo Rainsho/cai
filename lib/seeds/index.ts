@@ -1,5 +1,5 @@
-import { CreationAttributes } from '@sequelize/core';
-import { Account, AccountType, Category, CategoryType, Label, Waterfall } from '../models';
+import { CreationAttributes, Op } from '@sequelize/core';
+import { Account, AccountType, Category, CategoryType, initDB, Label, Waterfall } from '../models';
 
 const accounts: CreationAttributes<Account>[] = [
   { genre: AccountType.CASH, name: '现金' },
@@ -192,6 +192,50 @@ const categories: CreationAttributes<Category>[] = [
 
 const labels: CreationAttributes<Label>[] = [{ name: '日常' }, { name: '房产' }, { name: '装修' }];
 
-const waterfalls: CreationAttributes<Waterfall>[] = [];
+const waterfalls: CreationAttributes<Waterfall>[] = [
+  { type: CategoryType.INCOME, aid: 1, cid: 1, lid: 1, income: 100000.01 },
+  { type: CategoryType.INCOME, aid: 1, cid: 1, lid: 1, income: 100000.02 },
+];
 
 export const seeds = { accounts, categories, labels, waterfalls };
+
+export async function insertSeeds(seed = false) {
+  if (!seed) {
+    const waterfall = await Waterfall.findByPk(1, {
+      include: ['account', 'category', 'label'],
+    });
+    console.log(waterfall?.toJSON());
+
+    const account = await Account.findByPk(1, { include: ['waterfalls'] });
+    console.log(account?.toJSON());
+
+    return;
+  }
+
+  try {
+    await initDB(true);
+
+    await Account.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
+    await Category.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
+    await Label.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
+    await Waterfall.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
+
+    for (const account of seeds.accounts) {
+      await Account.create(account);
+    }
+
+    for (const category of seeds.categories) {
+      await Category.create(category);
+    }
+
+    for (const label of seeds.labels) {
+      await Label.create(label);
+    }
+
+    for (const waterfall of seeds.waterfalls) {
+      await Waterfall.create(waterfall);
+    }
+  } catch (e) {
+    console.log((e as Error).message);
+  }
+}

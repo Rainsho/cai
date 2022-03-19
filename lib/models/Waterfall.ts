@@ -16,7 +16,8 @@ type WaterfallModelAttributes = {
   ps: string;
 };
 
-type WaterfallCreationAttributes = Pick<WaterfallModelAttributes, 'type' | 'aid' | 'cid' | 'lid'>;
+type WaterfallCreationAttributes = Pick<WaterfallModelAttributes, 'type' | 'aid' | 'cid' | 'lid'> &
+  Partial<WaterfallModelAttributes>;
 
 export class Waterfall extends Base<WaterfallModelAttributes, WaterfallCreationAttributes> {
   declare type: number;
