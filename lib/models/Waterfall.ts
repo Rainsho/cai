@@ -1,6 +1,8 @@
-import { DataTypes } from '@sequelize/core';
+import { DataTypes, InferAttributes } from '@sequelize/core';
+import { Account } from './Account';
 import { Base, BaseCol, defaultScope } from './Base';
-import { CategoryType } from './Category';
+import { Category, CategoryType } from './Category';
+import { Label } from './Label';
 import { sequelize } from './sequelize';
 
 type WaterfallModelAttributes = {
@@ -14,6 +16,11 @@ type WaterfallModelAttributes = {
   uid: number;
   tid: number;
   ps: string;
+
+  // FIXME: Association should declare in Model
+  account?: InferAttributes<Account>;
+  category?: InferAttributes<Category>;
+  label?: InferAttributes<Label>;
 };
 
 type WaterfallCreationAttributes = Pick<WaterfallModelAttributes, 'type' | 'aid' | 'cid' | 'lid'> &

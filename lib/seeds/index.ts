@@ -220,21 +220,10 @@ export async function insertSeeds(seed = false) {
     await Label.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
     await Waterfall.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
 
-    for (const account of seeds.accounts) {
-      await Account.create(account);
-    }
-
-    for (const category of seeds.categories) {
-      await Category.create(category);
-    }
-
-    for (const label of seeds.labels) {
-      await Label.create(label);
-    }
-
-    for (const waterfall of seeds.waterfalls) {
-      await Waterfall.create(waterfall);
-    }
+    await Account.bulkCreate(seeds.accounts);
+    await Category.bulkCreate(seeds.categories);
+    await Label.bulkCreate(seeds.labels);
+    await Waterfall.bulkCreate(seeds.waterfalls);
   } catch (e) {
     console.log((e as Error).message);
   }

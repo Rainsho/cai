@@ -1,8 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { flushCache } from '../../lib/cache';
 
-export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  flushCache();
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   res.write('pong');
   res.end();
 }
