@@ -80,7 +80,7 @@ Waterfall.init(
     },
     ps: DataTypes.STRING,
   },
-  { sequelize, defaultScope, tableName: 'waterfalls' }
+  { sequelize, defaultScope, tableName: 'waterfalls', paranoid: true }
 );
 
 Waterfall.addHook('beforeValidate', async (waterfall: Waterfall) => {

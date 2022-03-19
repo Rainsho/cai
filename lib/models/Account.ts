@@ -66,5 +66,5 @@ Account.init(
     dueDay: DataTypes.TINYINT,
     sort: DataTypes.SMALLINT,
   },
-  { sequelize, defaultScope, tableName: 'accounts' }
+  { sequelize, defaultScope, tableName: 'accounts', paranoid: true }
 );

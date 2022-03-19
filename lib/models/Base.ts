@@ -22,5 +22,5 @@ export const BaseCol = {
 };
 
 export const defaultScope: ModelOptions['defaultScope'] = {
-  attributes: { exclude: ['createdAt', 'updatedAt'] },
+  attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] },
 };

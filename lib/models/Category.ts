@@ -40,7 +40,7 @@ Category.init(
     },
     sort: DataTypes.SMALLINT,
   },
-  { sequelize, defaultScope, tableName: 'categories' }
+  { sequelize, defaultScope, tableName: 'categories', paranoid: true }
 );
 
 Category.addHook('beforeValidate', async (category: Category) => {

@@ -22,5 +22,5 @@ Label.init(
     },
     sort: DataTypes.SMALLINT,
   },
-  { sequelize, defaultScope, tableName: 'labels' }
+  { sequelize, defaultScope, tableName: 'labels', paranoid: true }
 );
