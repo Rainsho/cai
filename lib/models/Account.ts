@@ -11,7 +11,22 @@ export enum AccountType {
   VIRTUAL = '虚拟',
 }
 
-export class Account extends Base {
+type AccountModelAttributes = {
+  genre: string;
+  name: string;
+  show: boolean;
+  net: boolean;
+  credit: boolean;
+  limit: number;
+  billDay: number;
+  dueDay: number;
+  sort: number;
+};
+
+type AccountCreationAttributes = Pick<AccountModelAttributes, 'genre' | 'name'> &
+  Partial<AccountModelAttributes>;
+
+export class Account extends Base<AccountModelAttributes, AccountCreationAttributes> {
   declare genre: string;
   declare name: string;
   declare show: boolean;

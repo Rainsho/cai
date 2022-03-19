@@ -2,11 +2,21 @@ import { DataTypes } from '@sequelize/core';
 import { Base, BaseCol, defaultScope } from './Base';
 import { sequelize } from './sequelize';
 
-export class Category extends Base {
+type CategoryModelAttributes = {
+  name: string;
+  subName?: string;
+  type: CategoryType;
+  sort: number;
+};
+
+type CategoryCreationsAttributes = Omit<CategoryModelAttributes, 'sort'>;
+
+export class Category extends Base<CategoryModelAttributes, CategoryCreationsAttributes> {
   declare name: string;
   // declare cid: number;
   declare subName: string;
   declare type: CategoryType;
+  declare sort: number;
 }
 
 export enum CategoryType {
@@ -28,6 +38,7 @@ Category.init(
       type: DataTypes.TINYINT,
       allowNull: false,
     },
+    sort: DataTypes.SMALLINT,
   },
   { sequelize, defaultScope, tableName: 'categories' }
 );

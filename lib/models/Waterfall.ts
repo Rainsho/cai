@@ -3,7 +3,22 @@ import { Base, BaseCol, defaultScope } from './Base';
 import { CategoryType } from './Category';
 import { sequelize } from './sequelize';
 
-export class Waterfall extends Base {
+type WaterfallModelAttributes = {
+  type: number;
+  occur: Date;
+  income: number;
+  outcome: number;
+  aid: number;
+  cid: number;
+  lid: number;
+  uid: number;
+  tid: number;
+  ps: string;
+};
+
+type WaterfallCreationAttributes = Pick<WaterfallModelAttributes, 'type' | 'aid' | 'cid' | 'lid'>;
+
+export class Waterfall extends Base<WaterfallModelAttributes, WaterfallCreationAttributes> {
   declare type: number;
   declare occur: Date;
   declare income: number;

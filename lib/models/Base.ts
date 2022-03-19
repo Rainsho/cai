@@ -1,6 +1,11 @@
 import { CreationOptional, DataTypes, Model, ModelOptions } from '@sequelize/core';
 
-export class Base extends Model {
+type BaseAttributes = {
+  id: number;
+  createdAt: Date;
+  updatedAt: Date;
+};
+export class Base<T = any, C = {}> extends Model<T & BaseAttributes, C> {
   declare id: CreationOptional<number>;
   declare createdAt: CreationOptional<Date>;
   declare updatedAt: CreationOptional<Date>;

@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { initDB } from '../../lib/db';
+import { insertSeeds } from '../../lib/db';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  await initDB(!!req.query?.seed);
+  await insertSeeds(!!req.query?.seed && process.env.NODE_ENV !== 'production');
   res.write('DB is initialized');
   res.end();
 }

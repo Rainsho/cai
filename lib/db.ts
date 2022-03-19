@@ -1,10 +1,8 @@
-import { sequelize } from './models/sequelize';
-import { Account, AccountType } from './models/Account';
-import { Category, CategoryType } from './models/Category';
-import { Label } from './models/Label';
-import { Waterfall } from './models/Waterfall';
+import { Op } from '@sequelize/core';
+import { Account, Category, Label, sequelize, Waterfall } from './models';
+import { seeds } from './seeds';
 
-async function init(force = false) {
+export async function init(force = false) {
   try {
     Account.hasMany(Waterfall, { foreignKey: 'aid', as: 'waterfalls', constraints: false });
     Category.hasMany(Waterfall, { foreignKey: 'cid', as: 'waterfalls', constraints: false });
@@ -21,7 +19,7 @@ async function init(force = false) {
   }
 }
 
-export async function initDB(seed = false) {
+export async function insertSeeds(seed = false) {
   if (!seed) {
     const waterfall = await Waterfall.findByPk(1, {
       include: ['account', 'category', 'label'],
@@ -37,21 +35,25 @@ export async function initDB(seed = false) {
   try {
     await init(true);
 
-    if (!(await Account.findByPk(1))) {
-      await Account.upsert({ id: 1, genre: AccountType.CASH, name: '现金' });
+    await Account.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
+    await Category.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
+    await Label.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
+    await Waterfall.destroy({ where: { createdAt: { [Op.lt]: new Date() } } });
+
+    for (const account of seeds.accounts) {
+      await Account.create(account);
     }
 
-    if (!(await Category.findByPk(1))) {
-      await Category.upsert({ id: 1, name: '餐饮', type: CategoryType.OUTCOME });
-      await Category.upsert({ id: 2, name: '工资', type: CategoryType.INCOME });
+    for (const category of seeds.categories) {
+      await Category.create(category);
     }
 
-    if (!(await Label.findByPk(1))) {
-      await Label.upsert({ id: 1, name: '日常' });
+    for (const label of seeds.labels) {
+      await Label.create(label);
     }
 
-    if (!(await Waterfall.findByPk(1))) {
-      await Waterfall.upsert({ type: CategoryType.INCOME, income: 0.1, aid: 1, cid: 1, lid: 1 });
+    for (const waterfall of seeds.waterfalls) {
+      await Waterfall.create(waterfall);
     }
   } catch (e) {
     console.log((e as Error).message);
@@ -59,6 +61,3 @@ export async function initDB(seed = false) {
 }
 
 init();
-
-export { AccountType, CategoryType };
-export { Account, Category, Label, Waterfall };
