@@ -1,12 +1,14 @@
 import create from 'zustand';
+import type { Waterfall } from '../lib/models';
 import { request } from '../lib/request';
-import { APIs } from '../lib/types';
+import { APIs, InferAttributes } from '../lib/types';
 
 type StoreData = {
   balances: APIs.FEED['balances'];
   list: APIs.FEED['list'];
   meta: APIs.FEED['meta'];
   loading: Partial<Record<keyof StoreAsyncFunc, boolean>>;
+  waterfall: InferAttributes<Waterfall> | null;
 };
 
 type StoreAsyncFunc = {
@@ -18,6 +20,7 @@ export const useStore = create<StoreData & StoreAsyncFunc>(set => ({
   list: [],
   meta: { accounts: [], categories: [], labels: [] },
   loading: {},
+  waterfall: null,
   fetchFeed: async () => {
     try {
       set({ loading: { fetchFeed: true } });

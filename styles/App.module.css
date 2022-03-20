@@ -6,6 +6,10 @@
   padding: 0;
 }
 
+.app :global(.adm-tabs-content) {
+  padding: 0;
+}
+
 .main {
   min-height: 100vh;
   padding-top: 2rem;

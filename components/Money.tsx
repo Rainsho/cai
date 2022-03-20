@@ -8,7 +8,7 @@ const Money: React.FC<{ value: number; pos?: boolean }> = ({ value, pos }) => {
     return '';
   }, [pos]);
 
-  return <span className={`money ${color}`}>{value / 100}</span>;
+  return <span className={`money ${color}`}>{(value / 100).toFixed(2)}</span>;
 };
 
 export default Money;

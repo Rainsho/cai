@@ -6,12 +6,15 @@ import { CategoryType, InferAttributes } from '../lib/types';
 import Money from './Money';
 import styles from './styles.module.css';
 
-const WaterfallItem: React.FC<{ waterfall: InferAttributes<Waterfall> }> = ({ waterfall }) => {
+const WaterfallItem: React.FC<{
+  waterfall: InferAttributes<Waterfall>;
+  onClick: (wf: InferAttributes<Waterfall> | null) => void;
+}> = ({ waterfall, onClick }) => {
   const pos = waterfall.type === CategoryType.INCOME || waterfall.type === CategoryType.TRANSFER_IN;
   const value = pos ? waterfall.income : waterfall.outcome;
 
   return (
-    <List.Item>
+    <List.Item onClick={() => onClick(waterfall)}>
       <div className={styles.itemRow}>
         <div className={styles.itemLeft}>
           <div>{waterfall.category?.subName || waterfall.category?.name}</div>

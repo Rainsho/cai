@@ -21,8 +21,9 @@ export enum AccountType {
 export enum CategoryType {
   INCOME = 0,
   OUTCOME = 1,
-  TRANSFER_IN = 2,
-  TRANSFER_OUT = 3,
+  TRANSFER = 2,
+  TRANSFER_IN = 3,
+  TRANSFER_OUT = 4,
 }
 
 export type Balance<T extends BalanceType> = {
@@ -37,6 +38,8 @@ export type MonthBalance = Balance<BalanceType.MONTH>;
 export type AccountBalance = Balance<BalanceType.ACCOUNT> & { aid: number };
 
 export type InferAttributes<T> = T extends Model<infer M, infer C> ? M : never;
+
+export type InferCreationAttributes<T> = T extends Model<infer M, infer C> ? C : never;
 
 export namespace APIs {
   export type FEED = {

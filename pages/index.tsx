@@ -1,6 +1,7 @@
 import { Button, Card, Empty, Grid, List, Skeleton } from 'antd-mobile';
 import { DownOutline, RightOutline } from 'antd-mobile-icons';
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import Money from '../components/Money';
 import MonthTitle from '../components/MonthTitle';
@@ -25,6 +26,7 @@ const Home: NextPage = () => {
   }));
   const [record, setRecord] = useState<Record<string, Array<InferAttributes<Waterfall>>>>({});
   const [cardState, setCardState] = useState<Record<string, CardState>>({});
+  const router = useRouter();
 
   const handleClick = useCallback(async (name: string, state: CardState, fetch: boolean) => {
     if (state === CardState.OPEN) {
@@ -43,6 +45,14 @@ const Home: NextPage = () => {
 
     setCardState(pre => Object.assign({}, pre, { [name]: CardState.OPEN }));
   }, []);
+
+  const handleUpsert = useCallback(
+    (waterfall: InferAttributes<Waterfall> | null) => {
+      useStore.setState({ waterfall });
+      router.push('/bill');
+    },
+    [router]
+  );
 
   useEffect(() => {
     useStore
@@ -103,7 +113,7 @@ const Home: NextPage = () => {
             <Money value={income - outcome} pos={income - outcome > 0} />
           </Grid.Item>
           <Grid.Item span={2} style={{ padding: '1rem' }}>
-            <Button block color="primary">
+            <Button block color="primary" onClick={() => handleUpsert(null)}>
               记一笔
             </Button>
           </Grid.Item>
@@ -127,7 +137,7 @@ const Home: NextPage = () => {
               <Skeleton.Paragraph />
             ) : record[balance.name] && record[balance.name].length > 0 ? (
               record[balance.name].map(waterfall => (
-                <WaterfallItem key={waterfall.id} waterfall={waterfall} />
+                <WaterfallItem key={waterfall.id} waterfall={waterfall} onClick={handleUpsert} />
               ))
             ) : (
               <Empty />

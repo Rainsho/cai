@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { flushCache } from '../../../lib/cache';
 import { Waterfall } from '../../../lib/models';
 import { APIs } from '../../../lib/types';
 import { logger } from '../../../lib/utils';
@@ -15,13 +16,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const [result] = await Waterfall.upsert(record);
+    await flushCache();
     res.json(result.toJSON());
     return;
   }
 
   if (req.method === 'DELETE') {
-    const result = await Waterfall.destroy({ where: { id: +req.query.id } });
-    res.json({ result, ok: result > 0 });
+    const result = await Waterfall.destroy({ where: { id: +req.body.id } });
+    await flushCache();
+    res.json({ result });
     return;
   }
 
