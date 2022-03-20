@@ -1,4 +1,4 @@
-const message = console;
+import { Toast } from 'antd-mobile';
 
 async function fetchExt<T, R>(path: string, method: string, body?: T): Promise<R> {
   const request =
@@ -11,6 +11,11 @@ async function fetchExt<T, R>(path: string, method: string, body?: T): Promise<R
         });
 
   return request.then(response => {
+    if (response.redirected && window.location.href !== response.url) {
+      window.location.replace(response.url);
+      return;
+    }
+
     if (response.ok) {
       const type = response.headers.get('Content-Type');
 
@@ -18,7 +23,7 @@ async function fetchExt<T, R>(path: string, method: string, body?: T): Promise<R
     }
 
     return response.json().then(e => {
-      message.error(e.message);
+      Toast.show(e.message);
       throw e;
     });
   });

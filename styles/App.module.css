@@ -1,0 +1,23 @@
+.app {
+  padding: 0 1rem;
+}
+
+.main {
+  min-height: 100vh;
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+.title {
+  text-align: center;
+}
+
+.bottom {
+  width: 100%;
+  padding: 0.25rem 0;
+  border-top: 1px solid #eaeaea;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: #fff;
+}

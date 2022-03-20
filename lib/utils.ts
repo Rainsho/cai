@@ -17,3 +17,7 @@ export function calcBalance<T extends { income: number; outcome: number }>(
 
   return list.reverse();
 }
+
+export function displayCent(cent: number): number {
+  return cent / 100;
+}

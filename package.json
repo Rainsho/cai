@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@sequelize/core": "^7.0.0-alpha.10",
+    "antd-mobile": "^5.7.1",
+    "antd-mobile-icons": "^0.2.2",
     "cookie": "^0.4.2",
     "jose": "^4.6.0",
     "moment": "^2.29.1",
@@ -28,6 +30,8 @@
     "eslint-config-next": "12.1.0",
     "husky": ">=6",
     "lint-staged": ">=10",
+    "next-images": "^1.8.4",
+    "next-transpile-modules": "^9.0.0",
     "prettier": "^2.6.0",
     "typescript": "4.6.2"
   },

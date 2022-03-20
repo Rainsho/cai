@@ -2,7 +2,7 @@ import type { NextPage } from 'next';
 import { useEffect } from 'react';
 import { useStore } from '../hooks/useStore';
 import { CategoryType } from '../lib/types';
-import styles from '../styles/Home.module.css';
+import styles from '../styles/App.module.css';
 
 const Home: NextPage = () => {
   const { balances, list, loading } = useStore(({ balances, list, loading }) => ({
@@ -26,10 +26,8 @@ const Home: NextPage = () => {
   const { income, outcome } = balances[0];
 
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>
-        Welcome to <a href="https://nextjs.org">Next.js!</a>
-      </h1>
+    <>
+      <h1 className={styles.title}>Welcome to CAI</h1>
 
       <p className={styles.description}>
         <p>本月支出: {outcome}</p>
@@ -46,7 +44,7 @@ const Home: NextPage = () => {
           </p>
         ))}
       </div>
-    </main>
+    </>
   );
 };
 
