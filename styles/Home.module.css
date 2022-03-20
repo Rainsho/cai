@@ -1,0 +1,15 @@
+.title {
+  text-align: center;
+}
+
+.balanceCard :global(.adm-card-body) {
+  padding: 0;
+}
+
+.balanceCard :global(.adm-list) {
+  margin: 0;
+}
+
+.balanceCard :global(.adm-list-item-content-main) {
+  padding: 0.25rem 0;
+}

@@ -21,7 +21,8 @@ export enum AccountType {
 export enum CategoryType {
   INCOME = 0,
   OUTCOME = 1,
-  TRANSFER = 2,
+  TRANSFER_IN = 2,
+  TRANSFER_OUT = 3,
 }
 
 export type Balance<T extends BalanceType> = {

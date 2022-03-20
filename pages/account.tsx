@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Account = () => {
-  return <div>account</div>;
+const Account: React.FC = () => {
+  return <div>account to-do</div>;
 };
 
 export default Account;

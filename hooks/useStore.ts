@@ -10,7 +10,7 @@ type StoreData = {
 };
 
 type StoreAsyncFunc = {
-  fetchFeed: () => void;
+  fetchFeed: () => Promise<APIs.FEED | null>;
 };
 
 export const useStore = create<StoreData & StoreAsyncFunc>(set => ({
@@ -23,7 +23,9 @@ export const useStore = create<StoreData & StoreAsyncFunc>(set => ({
       set({ loading: { fetchFeed: true } });
       const feed = await request.get<APIs.FEED>('/api/list');
       set(feed);
+      return feed;
     } catch (e) {
+      return null;
     } finally {
       set({ loading: { fetchFeed: false } });
     }

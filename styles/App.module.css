@@ -2,6 +2,10 @@
   padding: 0 1rem;
 }
 
+.app :global(.adm-card) {
+  padding: 0;
+}
+
 .main {
   min-height: 100vh;
   padding-top: 2rem;
