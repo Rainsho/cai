@@ -1,4 +1,4 @@
-import type { InferCreationAttributes, Model } from '@sequelize/core';
+import type { Model } from '@sequelize/core';
 import type { Account, Category, Label, Waterfall } from './models';
 
 export enum BalanceType {
