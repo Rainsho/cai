@@ -13,13 +13,25 @@ const Bill: React.FC = () => {
     <>
       <NavBar onBack={back}>记一笔</NavBar>
       <Tabs defaultActiveKey={waterfall?.type.toString()}>
-        <Tabs.Tab title="支出" key={CategoryType.OUTCOME}>
+        <Tabs.Tab
+          title="支出"
+          key={CategoryType.OUTCOME}
+          disabled={!!waterfall && waterfall.type !== CategoryType.OUTCOME}
+        >
           <BillForm type={CategoryType.OUTCOME} meta={meta} waterfall={waterfall} />
         </Tabs.Tab>
-        <Tabs.Tab title="收入" key={CategoryType.INCOME}>
-          TODO
+        <Tabs.Tab
+          title="收入"
+          key={CategoryType.INCOME}
+          disabled={!!waterfall && waterfall.type !== CategoryType.INCOME}
+        >
+          <BillForm type={CategoryType.INCOME} meta={meta} waterfall={waterfall} />
         </Tabs.Tab>
-        <Tabs.Tab title="转账" key={CategoryType.TRANSFER}>
+        <Tabs.Tab
+          title="转账"
+          key={CategoryType.TRANSFER}
+          disabled={!!waterfall && waterfall.type !== CategoryType.TRANSFER}
+        >
           TODO
         </Tabs.Tab>
       </Tabs>

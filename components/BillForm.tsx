@@ -1,7 +1,17 @@
-import { Button, CascadePicker, DatePicker, Form, Grid, Input, Radio, Space } from 'antd-mobile';
+import {
+  Button,
+  CascadePicker,
+  DatePicker,
+  Form,
+  Grid,
+  Input,
+  NumberKeyboard,
+  Radio,
+  Space,
+} from 'antd-mobile';
 import moment from 'moment';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Category, Waterfall } from '../lib/models';
 import { request } from '../lib/request';
 import { APIs, CategoryType, InferAttributes, InferCreationAttributes } from '../lib/types';
@@ -13,15 +23,23 @@ type BillFormProps = {
   meta: APIs.FEED['meta'];
 };
 
-type BillCreator = InferCreationAttributes<Waterfall> & { id?: number };
+type BillCreator = InferCreationAttributes<Waterfall> & { id?: number; kbValue?: string };
+type KeyboardFor = 'outcome' | 'income';
 
 const BillForm: React.FC<BillFormProps> = ({ type, waterfall, meta }) => {
   const [form] = Form.useForm<BillCreator>();
   const [selectedCategory, setSelectedCategory] = useState<InferAttributes<Category>[]>([]);
   const [showCtg, setShowCtg] = useState<boolean>(false);
   const [showOccur, setShowOccur] = useState<boolean>(false);
+  const [showKeyboard, setShowKeyboard] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+  const ref = useRef();
+
+  const keyboardFor = useMemo<KeyboardFor>(
+    () => (type === CategoryType.OUTCOME ? 'outcome' : 'income'),
+    [type]
+  );
 
   const category = useMemo(() => {
     const categories: InferAttributes<Category>[] = meta.categories.filter(x => x.type === type);
@@ -39,7 +57,7 @@ const BillForm: React.FC<BillFormProps> = ({ type, waterfall, meta }) => {
   }, [meta, type]);
 
   const initialValues = useMemo<BillCreator>(() => {
-    const init = waterfallCreator(waterfall, type);
+    const init: BillCreator = waterfallCreator(waterfall, type);
 
     if (!waterfall) {
       init.aid = meta.accounts[0]?.id;
@@ -48,18 +66,23 @@ const BillForm: React.FC<BillFormProps> = ({ type, waterfall, meta }) => {
       init.income = 0;
       init.outcome = 0;
       init.occur = new Date();
+      init.kbValue = '';
     } else {
       init.income = waterfall.income / 100;
       init.outcome = waterfall.outcome / 100;
       init.occur = new Date(init.occur!);
+      init.kbValue = init[keyboardFor]?.toString();
     }
 
     return init;
-  }, [waterfall, meta, type, category]);
+  }, [waterfall, meta, type, category, keyboardFor]);
 
   const handleUpsert = useCallback(
     (value: BillCreator) => {
       value.outcome = (value.outcome! * 100) | 0;
+      value.income = (value.income! * 100) | 0;
+      delete value.kbValue;
+
       console.log(value);
 
       setLoading(true);
@@ -118,8 +141,19 @@ const BillForm: React.FC<BillFormProps> = ({ type, waterfall, meta }) => {
         <Form.Item name="type" hidden>
           <Input />
         </Form.Item>
-        <Form.Item label="金额" name="outcome" layout="horizontal">
-          <Input type="number" />
+        <Form.Item name="outcome" hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item name="income" hidden>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          label="金额"
+          name="kbValue"
+          layout="horizontal"
+          onClick={() => setShowKeyboard(true)}
+        >
+          <Input type="text" readOnly />
         </Form.Item>
         <Form.Item label="时间" name="occur" layout="horizontal">
           <Space align="center">
@@ -236,6 +270,29 @@ const BillForm: React.FC<BillFormProps> = ({ type, waterfall, meta }) => {
           style={{ height: '60vh' }}
         />
       )}
+      <NumberKeyboard
+        visible={showKeyboard}
+        customKey="."
+        confirmText="OK"
+        onInput={value => {
+          const kbValue = form.getFieldValue('kbValue') || '';
+          form.setFieldsValue({ kbValue: kbValue + value });
+        }}
+        onDelete={() => {
+          const kbValue = form.getFieldValue('kbValue') || '';
+          form.setFieldsValue({ kbValue: kbValue.substring(0, kbValue.length - 1) });
+        }}
+        onClose={() => setShowKeyboard(false)}
+        afterClose={() => {
+          const kbValue = form.getFieldValue('kbValue') || '';
+          form.setFieldsValue({ [keyboardFor]: +kbValue });
+        }}
+        onConfirm={() => {
+          const kbValue = form.getFieldValue('kbValue') || '';
+          form.setFieldsValue({ [keyboardFor]: +kbValue });
+          form.submit();
+        }}
+      />
     </>
   );
 };

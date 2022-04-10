@@ -44,7 +44,7 @@ export class Waterfall extends Base<WaterfallModelAttributes, WaterfallCreationA
   ): (WaterfallCreationAttributes & { id?: number }) | null {
     const { id, type, occur, income, outcome, aid, cid, lid, uid, tid, ps } = payload || {};
 
-    if ([type, aid, cid, lid].some(prop => !prop)) {
+    if ([type, aid, cid, lid].some(prop => prop === undefined)) {
       return null;
     }
 
