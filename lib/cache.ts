@@ -25,14 +25,14 @@ export async function flushMonthBalance() {
 
   if (!oldest) return;
 
-  let date = moment(oldest);
+  const date = moment(oldest);
   const end = moment().endOf('month');
   const balances: MonthBalance[] = [];
 
   while (date.isBefore(end)) {
     const balance = await calcMonthBalance(date);
     balances.unshift(balance);
-    date = date.add(1, 'month');
+    date.add(1, 'month');
   }
 
   CACHE.monthBalances = balances;
@@ -40,8 +40,8 @@ export async function flushMonthBalance() {
 
 export async function calcMonthBalance(date: Moment): Promise<MonthBalance> {
   const month = date.format('YYYY-MM');
-  const start = date.startOf('month').toDate();
-  const end = date.endOf('month').toDate();
+  const start = date.clone().startOf('month').toDate();
+  const end = date.clone().endOf('month').toDate();
 
   const records = await Waterfall.findAll({ where: { occur: { [Op.gte]: start, [Op.lte]: end } } });
   const result: MonthBalance = { type: BalanceType.MONTH, name: month, income: 0, outcome: 0 };
