@@ -188,6 +188,7 @@ const categories: CreationAttributes<Category>[] = [
   { type: CategoryType.OUTCOME, name: '装修', subName: '五金电子' },
   { type: CategoryType.OUTCOME, name: '装修', subName: '人工费' },
   { type: CategoryType.OUTCOME, name: '装修', subName: '设计费' },
+  { type: CategoryType.TRANSFER, name: '转账' },
   { type: CategoryType.TRANSFER_IN, name: '转账-贷' },
   { type: CategoryType.TRANSFER_OUT, name: '转账-借' },
 ];

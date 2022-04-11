@@ -69,3 +69,9 @@ export namespace APIs {
 
   export type UPSERT_WATERFALL = InferCreationAttributes<Waterfall>;
 }
+
+export type TransferHelper = {
+  aid_out: number;
+  aid_in: number;
+  amount: string;
+};

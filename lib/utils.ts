@@ -33,3 +33,7 @@ export function waterfallCreator(
 
   return { id, type, occur, income, outcome, aid, cid, lid, uid, tid, ps };
 }
+
+export function edge(): never {
+  throw new Error('should never happen');
+}

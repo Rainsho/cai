@@ -11,7 +11,7 @@ import {
 } from 'antd-mobile';
 import moment from 'moment';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Category, Waterfall } from '../lib/models';
 import { request } from '../lib/request';
 import { APIs, CategoryType, InferAttributes, InferCreationAttributes } from '../lib/types';
@@ -34,7 +34,6 @@ const BillForm: React.FC<BillFormProps> = ({ type, waterfall, meta }) => {
   const [showKeyboard, setShowKeyboard] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  const ref = useRef();
 
   const keyboardFor = useMemo<KeyboardFor>(
     () => (type === CategoryType.OUTCOME ? 'outcome' : 'income'),
